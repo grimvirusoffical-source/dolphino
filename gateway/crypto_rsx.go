@@ -14,3 +14,11 @@ func cbHMAC(key, msg []byte) [32]byte                   { return rsx.HmacSha256(
 func cbSeal(key, nonce, aad, pt []byte) ([]byte, error) { return rsx.Seal(key, nonce, aad, pt) }
 func cbOpen(key, nonce, aad, ct []byte) ([]byte, error) { return rsx.Open(key, nonce, aad, ct) }
 func cbSHA256(msg []byte) [32]byte                      { return rsx.Sha256(msg) }
+
+func cbHashPasswordPHC(pw []byte) (string, error) {
+	// t=3, m=64 MiB, p=1 — strong and well inside the rsx accept cap
+	return rsx.HashPasswordPHC(pw, 3, 64*1024, 1)
+}
+func cbVerifyPasswordPHC(pw []byte, phc string) (bool, error) {
+	return rsx.VerifyPasswordPHC(pw, phc)
+}
